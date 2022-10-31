@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "browser-game-cw-5"
+version = "0.1.0"
+description = "project made for sky.pro coursework 5"
+authors = ["Andrey Kopylov <104315220+obscurezz@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "browser_game_cw_5"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.2.2"
+pydantic = "^1.10.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

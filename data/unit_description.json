@@ -1,0 +1,26 @@
+[
+{
+  "name": "Warrior",
+  "max_health": 150,
+  "max_stamina": 100,
+  "attack": 20,
+  "stamina": 20,
+  "armor": 5
+},
+{
+  "name": "Thief",
+  "max_health": 150,
+  "max_stamina": 100,
+  "attack": 20,
+  "stamina": 20,
+  "armor": 5
+},
+{
+  "name": "Mage",
+  "max_health": 150,
+  "max_stamina": 100,
+  "attack": 20,
+  "stamina": 20,
+  "armor": 5
+}
+]

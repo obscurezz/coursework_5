@@ -1,0 +1,19 @@
+{
+  "weapons_list": [
+    {
+      "id": 1,
+      "name": "Simple sword",
+      "min_damage": 2,
+      "max_damage": 5,
+      "stamina_per_hit": 2
+    }
+  ],
+  "armor_list": [
+    {
+      "id": 1,
+      "name": "Simple chest",
+      "defense": 1,
+      "stamina_per_turn": 1
+    }
+  ]
+}

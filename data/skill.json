@@ -1,0 +1,22 @@
+[
+{
+  "name": "Default_skill",
+  "damage": 0,
+  "stamina_cost": 0
+},
+{
+  "name": "Warrior_skill",
+  "damage": 20,
+  "stamina_cost": 20
+},
+{
+  "name": "Thief_skill",
+  "damage": 20,
+  "stamina_cost": 20
+},
+{
+  "name": "Mage_skill",
+  "damage": 20,
+  "stamina_cost": 20
+}
+]
