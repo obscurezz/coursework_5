@@ -1,38 +1,41 @@
 from modules.player import BasePlayer
 from constants import RECOVERY_STAMINA_PER_TURN
+from decorator import singleton
+from logger import Logger
 
 
-class BaseSingleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
-
-
-class Battleground(metaclass=BaseSingleton):
+@singleton
+class Battleground:
     player = None
     enemy = None
     game_is_running = False
     stamina_recovery = RECOVERY_STAMINA_PER_TURN
 
-    def start_game(self, player: BasePlayer, enemy: BasePlayer) -> str:
+    @property
+    def get_heroes(self) -> dict:
+        return {'player': self.player, 'enemy': self.enemy}
+
+    def add_player(self, player: BasePlayer) -> None:
         self.player = player
+
+    def add_enemy(self, enemy: BasePlayer) -> None:
         self.enemy = enemy
+
+    def reset_battleground(self):
+        self.__init__()
+
+    def start_game(self) -> None:
+        Logger().add_message("The game has begun!")
         self.game_is_running = True
-        return "The game has begun!"
 
     def _check_players_hp(self) -> None:
-        if self.player.check_player_is_dead:
-            self._end_game(winner=self.enemy)
-        if self.enemy.check_player_is_dead:
-            self._end_game(winner=self.player)
+        if self.player.check_player_is_dead or self.enemy.check_player_is_dead:
+            self.end_game()
 
     def _regenerate_players_stamina(self) -> None:
-        self.player.recovery_stamina(self.stamina_recovery)
-        self.enemy.recovery_stamina(self.stamina_recovery)
+        if self.game_is_running:
+            self.player.recovery_stamina(self.stamina_recovery)
+            self.enemy.recovery_stamina(self.stamina_recovery)
 
     def next_turn(self) -> None:
         self._check_players_hp()
@@ -40,14 +43,24 @@ class Battleground(metaclass=BaseSingleton):
             self._regenerate_players_stamina()
             self.enemy.use_attack(target=self.player)
 
+    def skip_turn(self) -> None:
+        if self.game_is_running:
+            Logger().add_message(f"{self.player.name} skipped his turn")
+            self.next_turn()
+
     def player_attack(self) -> None:
-        self.player.use_attack(target=self.enemy)
-        self.next_turn()
+        if self.game_is_running:
+            self.player.use_attack(target=self.enemy)
+            self.next_turn()
 
     def player_use_skill(self) -> None:
-        self.player.use_skill(target=self.enemy)
-        self.next_turn()
+        if self.game_is_running:
+            self.player.use_skill(target=self.enemy)
+            self.next_turn()
 
-    def _end_game(self, winner: BasePlayer) -> str:
+    def end_game(self) -> str:
         self.game_is_running = False
-        return f"{winner.name} won! Game is ended!"
+        for hero in [self.player, self.enemy]:
+            if hero.check_player_is_dead():
+                Logger().add_message(f"{hero.name} was defeated.")
+                return ""

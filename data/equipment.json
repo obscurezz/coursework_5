@@ -12,7 +12,7 @@
     {
       "id": 1,
       "name": "Simple chest",
-      "defense": 1,
+      "defence": 1,
       "stamina_per_turn": 1
     }
   ]

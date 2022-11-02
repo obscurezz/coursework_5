@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from constants import RECOVERY_STAMINA_PER_TURN
+from logger import Logger
 from modules.equipment import Armor, Weapon
 from modules.unit_class import UnitClass
 
@@ -28,13 +28,11 @@ class BasePlayer(ABC):
     def show_current_stamina(self) -> str:
         return f"{self.name} has {self.current_stamina}"
 
-    def equip_weapon(self, weapon: Weapon) -> str:
+    def equip_weapon(self, weapon: Weapon) -> None:
         self.weapon = weapon
-        return f"{self.name} equipped weapon {self.weapon.name}"
 
-    def equip_armor(self, armor: Armor) -> str:
+    def equip_armor(self, armor: Armor) -> None:
         self.armor = armor
-        return f"{self.name} equipped weapon {self.armor.name}"
 
     def get_damage(self, damage_amount: int) -> int:
         self.current_health -= damage_amount
@@ -43,13 +41,16 @@ class BasePlayer(ABC):
     def _check_stamina_for_skill_enough(self) -> bool:
         return self.current_stamina >= self.unit_class.skill.stamina_cost
 
-    def use_skill(self, target: BasePlayer) -> str:
-        if not self.unit_class.skill.used:
+    def use_skill(self, target: BasePlayer) -> None:
+        if self.unit_class.skill.used:
+            Logger().add_message(f"Skill {self.unit_class.skill.name} has been already used")
+
+        if self._check_stamina_for_attack_enough():
             self.unit_class.skill.used = True
             self.current_stamina -= self.unit_class.skill.stamina_cost
-            target.current_health -= self.unit_class.skill.damage
-            return f"{self.name} used {self.unit_class.skill.name} and did {self.unit_class.skill.damage} to {target.name}"
-        return f"Skill {self.unit_class.skill.name} has been already used"
+            target.get_damage(self.unit_class.skill.damage)
+            Logger().add_message(
+                f"{self.name} used {self.unit_class.skill.name} and did {self.unit_class.skill.damage} to {target.name}")
 
     def _check_stamina_for_attack_enough(self) -> bool:
         return self.current_stamina >= self.weapon.stamina_per_hit
