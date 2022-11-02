@@ -29,8 +29,8 @@ class Battleground:
         self.game_is_running = True
 
     def _check_players_hp(self) -> None:
-        if self.player.check_player_is_dead or self.enemy.check_player_is_dead:
-            self.end_game()
+        if True in [self.player.check_player_is_dead, self.enemy.check_player_is_dead]:
+            self.game_is_running = False
 
     def _regenerate_players_stamina(self) -> None:
         if self.game_is_running:
@@ -42,6 +42,8 @@ class Battleground:
         if self.game_is_running:
             self._regenerate_players_stamina()
             self.enemy.use_attack(target=self.player)
+        else:
+            self.end_game()
 
     def skip_turn(self) -> None:
         if self.game_is_running:
@@ -58,9 +60,12 @@ class Battleground:
             self.player.use_skill(target=self.enemy)
             self.next_turn()
 
-    def end_game(self) -> str:
+    def end_game(self) -> None:
         self.game_is_running = False
-        for hero in [self.player, self.enemy]:
-            if hero.check_player_is_dead():
-                Logger().add_message(f"{hero.name} was defeated.")
-                return ""
+
+        if self.player.check_player_is_dead():
+            Logger().add_message(f"{self.player.name} was defeated.")
+        elif self.enemy.check_player_is_dead():
+            Logger().add_message(f"{self.enemy.name} was defeated.")
+        else:
+            Logger().add_message("Draw")

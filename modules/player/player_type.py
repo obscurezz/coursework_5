@@ -34,13 +34,16 @@ class CpuPlayer(BasePlayer):
     def use_attack(self, target: BasePlayer) -> str:
         if not self.unit_class.skill.used:
             if randint(1,2) == 1:
-                return self.use_skill(target=target)
+                self.use_skill(target=target)
+                Logger().add_message(
+                    f"{self.name} used {self.unit_class.skill.name} and did {self.unit_class.skill.damage} to {target.name}")
+                return Logger().get_message()
 
         if self._check_stamina_for_attack_enough:
             attack_damage = self.weapon.damage * self.unit_class.attack
 
             if target._check_armor_available():
-                target_armor = target.armor * target.unit_class.armor
+                target_armor = target.armor.defence * target.unit_class.armor
                 Logger().add_message(f"{target.name} uses his {target.armor.name} to block the attack")
             else:
                 target_armor = 0

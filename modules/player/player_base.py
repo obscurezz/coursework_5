@@ -22,10 +22,14 @@ class BasePlayer(ABC):
 
     @property
     def show_current_health(self) -> str:
+        if self.current_health < 0:
+            self.current_health = 0
         return f"{self.name} has {self.current_health} HP"
 
     @property
     def show_current_stamina(self) -> str:
+        if self.current_stamina < 0:
+            self.current_stamina = 0
         return f"{self.name} has {self.current_stamina}"
 
     def equip_weapon(self, weapon: Weapon) -> None:
