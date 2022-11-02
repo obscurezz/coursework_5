@@ -10,6 +10,7 @@ packages = [{include = "browser_game_cw_5"}]
 python = "^3.10"
 flask = "^2.2.2"
 pydantic = "^1.10.2"
+pylint = "^2.15.5"
 
 
 [build-system]
