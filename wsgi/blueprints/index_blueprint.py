@@ -7,5 +7,9 @@ index_blueprint = Blueprint('index_blueprint', __name__, template_folder=TEMPLAT
 
 @index_blueprint.get('/')
 def index():
+    """
+    clears battleground for new battle
+    :return: start page html
+    """
     Battleground().reset_battleground()
     return render_template('index.html')

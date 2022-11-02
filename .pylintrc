@@ -3,3 +3,6 @@ disable=
     C0114, # missing-module-docstring
     R0903, # Too few public methods
     C0301, # Line too long
+    W0125, # Using a conditional statement with a constant value
+    W0212, # Access to a protected member _check_armor_available of a client class
+    E0611, #  No name 'BaseModel' in module 'pydantic'

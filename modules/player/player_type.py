@@ -1,6 +1,6 @@
+from random import randint
 from modules.player.player_base import BasePlayer
 from logger import Logger
-from random import randint
 
 
 class HumanPlayer(BasePlayer):

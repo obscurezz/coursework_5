@@ -1,11 +1,13 @@
 import json
-
-from constants import UNIT_JSON
-from modules.skill import *
 from pydantic import BaseModel, Field
+from constants import UNIT_JSON
+from modules.skill import WarriorSkill, ThiefSkill, MageSkill, DefaultSkill, Skill
 
 
 class UnitClass(BaseModel):
+    """
+    Implements unit type for player
+    """
     name: str
     max_health: int
     max_stamina: int
@@ -15,7 +17,7 @@ class UnitClass(BaseModel):
     skill: Skill = Field(default=DefaultSkill)
 
 
-with open(UNIT_JSON) as desc_file:
+with open(UNIT_JSON, 'r', encoding='utf-8') as desc_file:
     unit_base_data: list[dict] = json.load(desc_file)
 
 WarriorClass = UnitClass(**unit_base_data[0], skill=WarriorSkill)
